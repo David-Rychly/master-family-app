@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import type { FamilyMember } from "@repo/shared";
+import { Avatar, AvatarFallback } from "@repo/ui/components/avatar";
+import { Badge } from "@repo/ui/components/badge";
+import { Card, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { fetchFamilyMembers } from "@/lib/api";
 
 export function FamilyMembers() {
@@ -14,17 +17,28 @@ export function FamilyMembers() {
       .catch((e: unknown) => setError(e instanceof Error ? e.message : "Unknown error"));
   }, []);
 
-  if (error) return <p className="text-red-600">Could not reach the API: {error}</p>;
-  if (!members) return <p className="text-zinc-500">Loading…</p>;
-
   return (
-    <ul className="flex flex-col gap-2">
-      {members.map((m) => (
-        <li key={m.id} className="rounded-lg border border-zinc-200 px-4 py-3 dark:border-zinc-800">
-          <span className="font-medium">{m.name}</span>{" "}
-          <span className="text-sm text-zinc-500">({m.role})</span>
-        </li>
-      ))}
-    </ul>
+    <Card>
+      <CardHeader>
+        <CardTitle>Members</CardTitle>
+      </CardHeader>
+      {error ? (
+        <p className="text-destructive">Could not reach the API ({error}). Check that it is running on port 4000.</p>
+      ) : !members ? (
+        <p className="text-muted-foreground">Loading members…</p>
+      ) : (
+        <ul className="flex flex-col">
+          {members.map((m) => (
+            <li key={m.id} className="flex items-center gap-3 border-t py-3 first:border-t-0">
+              <Avatar>
+                <AvatarFallback>{m.name.charAt(0).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <span className="flex-1 truncate">{m.name}</span>
+              <Badge variant={m.role === "parent" ? "primary" : "default"}>{m.role === "parent" ? "Parent" : "Child"}</Badge>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
   );
 }

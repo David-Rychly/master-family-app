@@ -1,0 +1,215 @@
+/* Family App theme. GENERATED from packages/ui/tokens.json by scripts/build-theme.mjs. Do not edit by hand. */
+
+/* Layer 1: design tokens, one block per color scheme. The scheme is the data-theme attribute on <html>. */
+:root, [data-theme="tide"] {
+  --fa-bg: #0c1012;
+  --fa-surface-1: #141a1d;
+  --fa-surface-2: #1c2428;
+  --fa-surface-3: #263035;
+  --fa-border: #263035;
+  --fa-border-strong: #677880;
+  --fa-text: #ecf1f2;
+  --fa-text-muted: #9eacb2;
+  --fa-text-subtle: #82929a;
+  --fa-accent: #3fd2c0;
+  --fa-accent-strong: #7ae3d6;
+  --fa-accent-soft: #3fd2c01f;
+  --fa-on-accent: #04211d;
+  --fa-success: #6fd99b;
+  --fa-warning: #f2c14e;
+  --fa-danger: #ff8a7a;
+  --fa-scrim: #0c1012e6;
+  color-scheme: dark;
+}
+[data-theme="ember"] {
+  --fa-bg: #110e0c;
+  --fa-surface-1: #1a1613;
+  --fa-surface-2: #241e1a;
+  --fa-surface-3: #302823;
+  --fa-border: #2f2823;
+  --fa-border-strong: #7d6e62;
+  --fa-text: #f3eee8;
+  --fa-text-muted: #b0a59b;
+  --fa-text-subtle: #978a7f;
+  --fa-accent: #f4a45e;
+  --fa-accent-strong: #f8c08e;
+  --fa-accent-soft: #f4a45e1f;
+  --fa-on-accent: #2b1606;
+  --fa-scrim: #110e0ce6;
+  color-scheme: dark;
+}
+[data-theme="moss"] {
+  --fa-bg: #0d100c;
+  --fa-surface-1: #151a14;
+  --fa-surface-2: #1d241c;
+  --fa-surface-3: #273026;
+  --fa-border: #273026;
+  --fa-border-strong: #6c7d67;
+  --fa-text: #edf1ea;
+  --fa-text-muted: #a3b09f;
+  --fa-text-subtle: #899784;
+  --fa-accent: #a9cf7c;
+  --fa-accent-strong: #c4dfa2;
+  --fa-accent-soft: #a9cf7c1f;
+  --fa-on-accent: #182408;
+  --fa-scrim: #0d100ce6;
+  color-scheme: dark;
+}
+[data-theme="berry"] {
+  --fa-bg: #110d10;
+  --fa-surface-1: #1a1418;
+  --fa-surface-2: #241c21;
+  --fa-surface-3: #30262c;
+  --fa-border: #2f262c;
+  --fa-border-strong: #7d6a75;
+  --fa-text: #f3ecf0;
+  --fa-text-muted: #b0a0a9;
+  --fa-text-subtle: #97868f;
+  --fa-accent: #f283a5;
+  --fa-accent-strong: #f6a9c0;
+  --fa-accent-soft: #f283a51f;
+  --fa-on-accent: #2e0816;
+  --fa-scrim: #110d10e6;
+  color-scheme: dark;
+}
+
+:root {
+  --fa-shadow-float: 0 12px 32px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+
+  /* shadcn/ui variables, mapped onto the tokens */
+  --background: var(--fa-bg);
+  --foreground: var(--fa-text);
+  --card: var(--fa-surface-1);
+  --card-foreground: var(--fa-text);
+  --popover: var(--fa-surface-3);
+  --popover-foreground: var(--fa-text);
+  --primary: var(--fa-accent);
+  --primary-foreground: var(--fa-on-accent);
+  --secondary: var(--fa-surface-2);
+  --secondary-foreground: var(--fa-text);
+  --muted: var(--fa-surface-2);
+  --muted-foreground: var(--fa-text-muted);
+  --accent: var(--fa-surface-2);
+  --accent-foreground: var(--fa-text);
+  --destructive: var(--fa-danger);
+  --border: var(--fa-border);
+  --input: var(--fa-border-strong);
+  --ring: var(--fa-accent);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface-1: var(--fa-surface-1);
+  --color-surface-2: var(--fa-surface-2);
+  --color-surface-3: var(--fa-surface-3);
+  --color-border-strong: var(--fa-border-strong);
+  --color-subtle: var(--fa-text-subtle);
+  --color-primary-strong: var(--fa-accent-strong);
+  --color-primary-soft: var(--fa-accent-soft);
+  --color-success: var(--fa-success);
+  --color-warning: var(--fa-warning);
+  --color-danger: var(--fa-danger);
+  --color-scrim: var(--fa-scrim);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-float: var(--fa-shadow-float);
+  /* Font variables come from next/font in apps/web/src/app/layout.tsx */
+  --font-display: var(--font-familjen), "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-onest), "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+/* Type styles from the design system: use as `type-<name>`, e.g. `type-h1`, `type-label`. */
+@utility type-display {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 56px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+@utility type-menu-item {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 44px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+}
+@utility type-body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+}
+@utility type-body-strong {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+}
+@utility type-small {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+}
+@utility type-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@utility type-stat {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}

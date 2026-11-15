@@ -33,6 +33,16 @@ pnpm dev          # web on http://localhost:3000, api on http://localhost:4000
 Other commands: `pnpm build`, `pnpm typecheck`, `pnpm lint`, `pnpm format`.
 Run a single app: `pnpm --filter api dev` or `pnpm --filter web dev`.
 
+## Design system
+
+Three layers, see the [Family App Design System](https://claude.ai/artifact/AtwDRxCHmA9gqFVSPqZ1Nq) for the visual reference:
+
+1. **Tokens**: `packages/ui/tokens.json` is the source of truth (a copy of the design system's tokens). `pnpm --filter @repo/ui build:theme` generates `src/styles/theme.css` (CSS variables per color scheme, shadcn variable mapping, Tailwind theme, `type-*` text styles) and `src/lib/schemes.ts`. Never edit those two by hand.
+2. **Base components**: shadcn/ui in `packages/ui/src/components`, restyled to the tokens. Add more with `pnpm dlx shadcn@latest add <name>` run inside `packages/ui`, then replace the `cn` import with `@repo/ui/lib/utils` if the CLI gets it wrong.
+3. **App components**: composed in `apps/web/src/components` (dashboard cards, full-page menu, scheme picker).
+
+The app is dark only. The user picks a color scheme (Tide, Ember, Moss, Berry); it is stored in the `scheme` cookie and applied by an inline script before first paint.
+
 ## API (mock data for now)
 
 - `GET /health`
