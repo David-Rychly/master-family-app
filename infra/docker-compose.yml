@@ -1,0 +1,16 @@
+# Local Postgres for development. Not used yet (no DB in the app so far).
+# Usage (once Docker Desktop is installed):  docker compose -f infra/docker-compose.yml up -d
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: family
+      POSTGRES_PASSWORD: family
+      POSTGRES_DB: family
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
