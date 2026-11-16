@@ -22,9 +22,11 @@
   },
   "devDependencies": {
     "@repo/config": "workspace:*",
+    "@storybook/nextjs-vite": "10.6.7",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9.39.5",
+    "storybook": "10.6.7",
     "typescript": "^5",
     "typescript-eslint": "^8.72.2"
   },

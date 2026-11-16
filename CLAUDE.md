@@ -25,7 +25,15 @@ Styling rules:
 - One accent element per card. Status colors always come with an icon or a word.
 - Icons: lucide-react, `strokeWidth={1.75}`. Each module's icon is defined once in `apps/web/src/lib/modules.ts`.
 - Copy is sentence case, short and plain, written like a note to a family member.
-- Every view that loads data has all three states: `Loading` + `Skeleton*` in the shape of the content (and a `loading.tsx` per route), `EmptyState` (`start` with one action, or `done`), and `ErrorState` sized to what failed. Dashboard cards go in a `CardSlot`, so each one loads and fails on its own. See them all at `/dev/states` in development.
+- Every view that loads data has all three states: `Loading` + `Skeleton*` in the shape of the content (and a `loading.tsx` per route), `EmptyState` (`start` with one action, or `done`), and `ErrorState` sized to what failed. Dashboard cards go in a `CardSlot`, so each one loads and fails on its own.
+
+## Storybook
+
+Storybook (`apps/storybook`, `pnpm storybook` → http://localhost:6006) is the catalogue of every component and state. A component is finished only when it has a story:
+- Put `<name>.stories.tsx` next to the component, in `packages/ui` or `apps/web`. Titles: `Base/…` for shadcn components, `States/…` for loading, empty and error, `App/…` for app components.
+- Cover each variant and each state the component can show (loading, empty, error, disabled, invalid), with realistic family copy, not lorem ipsum.
+- Pass data in as props so stories can show every state; a component that fetches its own data gets a story per state through its presentational part.
+- Changing a component means updating its story in the same change. `pnpm --filter storybook build` must pass, and the a11y panel must stay clean.
 
 ## Data
 

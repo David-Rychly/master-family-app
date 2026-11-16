@@ -1,0 +1,12 @@
+/* The web app's global styles: Tailwind, the theme and the design tokens. */
+@import "../../web/src/app/globals.css";
+
+/* Also scan the web app's components for class names. */
+@source "../../web/src";
+
+/* In the app these come from next/font in layout.tsx. */
+:root {
+  --font-familjen: "Familjen Grotesk";
+  --font-onest: "Onest";
+  --font-geist-mono: "Geist Mono";
+}

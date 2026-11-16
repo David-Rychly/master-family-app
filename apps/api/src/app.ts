@@ -6,7 +6,9 @@ import { familyRouter } from "./routes/family";
 export function createApp() {
   const app = express();
 
-  app.use(cors({ origin: process.env.CORS_ORIGIN ?? "http://localhost:3000" }));
+  // Comma-separated list of allowed origins: the web app and, in development, Storybook.
+  const origins = (process.env.CORS_ORIGIN ?? "http://localhost:3000,http://localhost:6006").split(",").map((o) => o.trim());
+  app.use(cors({ origin: origins }));
   app.use(express.json());
 
   app.use("/health", healthRouter);
