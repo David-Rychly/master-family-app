@@ -25,6 +25,7 @@ Styling rules:
 - One accent element per card. Status colors always come with an icon or a word.
 - Icons: lucide-react, `strokeWidth={1.75}`. Each module's icon is defined once in `apps/web/src/lib/modules.ts`.
 - Copy is sentence case, short and plain, written like a note to a family member.
+- Every view that loads data has all three states: `Loading` + `Skeleton*` in the shape of the content (and a `loading.tsx` per route), `EmptyState` (`start` with one action, or `done`), and `ErrorState` sized to what failed. Dashboard cards go in a `CardSlot`, so each one loads and fails on its own. See them all at `/dev/states` in development.
 
 ## Data
 

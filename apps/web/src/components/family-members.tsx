@@ -1,34 +1,66 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { UserPlus, Users } from "lucide-react";
 import type { FamilyMember } from "@repo/shared";
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar";
 import { Badge } from "@repo/ui/components/badge";
+import { Button } from "@repo/ui/components/button";
 import { Card, CardHeader, CardTitle } from "@repo/ui/components/card";
+import { EmptyState } from "@repo/ui/components/empty-state";
+import { ErrorState } from "@repo/ui/components/error-state";
+import { Loading, SkeletonRows } from "@repo/ui/components/skeleton";
 import { fetchFamilyMembers } from "@/lib/api";
 
+type State = { status: "loading" } | { status: "error" } | { status: "ready"; members: FamilyMember[] };
+
 export function FamilyMembers() {
-  const [members, setMembers] = useState<FamilyMember[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<State>({ status: "loading" });
+
+  const fetchMembers = useCallback(() => {
+    fetchFamilyMembers()
+      .then((members) => setState({ status: "ready", members }))
+      .catch((e: unknown) => {
+        console.error(e);
+        setState({ status: "error" });
+      });
+  }, []);
 
   useEffect(() => {
-    fetchFamilyMembers()
-      .then(setMembers)
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : "Unknown error"));
-  }, []);
+    fetchMembers();
+  }, [fetchMembers]);
+
+  const retry = () => {
+    setState({ status: "loading" });
+    fetchMembers();
+  };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Members</CardTitle>
       </CardHeader>
-      {error ? (
-        <p className="text-destructive">Could not reach the API ({error}). Check that it is running on port 4000.</p>
-      ) : !members ? (
-        <p className="text-muted-foreground">Loading members…</p>
+      {state.status === "loading" ? (
+        <Loading label="Loading family members">
+          <SkeletonRows rows={4} />
+        </Loading>
+      ) : state.status === "error" ? (
+        <ErrorState title="Couldn't load family members" onRetry={retry} />
+      ) : state.members.length === 0 ? (
+        <EmptyState
+          icon={<Users />}
+          title="No one here yet"
+          description="Add the people in your household so you can share lists, chores and plans."
+          action={
+            <Button size="sm">
+              <UserPlus />
+              Add member
+            </Button>
+          }
+        />
       ) : (
         <ul className="flex flex-col">
-          {members.map((m) => (
+          {state.members.map((m) => (
             <li key={m.id} className="flex items-center gap-3 border-t py-3 first:border-t-0">
               <Avatar>
                 <AvatarFallback>{m.name.charAt(0).toUpperCase()}</AvatarFallback>

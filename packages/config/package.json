@@ -2,5 +2,15 @@
   "name": "@repo/config",
   "version": "0.0.0",
   "private": true,
-  "files": ["tsconfig.base.json", "tsconfig.node.json"]
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.node.json",
+    "eslint"
+  ],
+  "type": "module",
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.node.json": "./tsconfig.node.json",
+    "./eslint/no-raw-colors": "./eslint/no-raw-colors.mjs"
+  }
 }

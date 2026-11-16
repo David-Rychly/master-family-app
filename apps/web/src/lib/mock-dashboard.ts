@@ -26,7 +26,12 @@ export const tomorrow: EventItem[] = [
   { time: "16:00", title: "Dentist, Ella", meta: "" },
 ];
 
-export const chores = {
+export type ChoresSummary = { done: number; total: number; people: { name: string; done: number; total: number }[] };
+export type ShoppingSummary = { count: number; lastChange: string; preview: string[] };
+export type MealsSummary = { tonight: string; tomorrow: string; week: string[]; todayIndex: number };
+export type BudgetSummary = { usedPercent: number; month: string; day: number; daysInMonth: number };
+
+export const chores: ChoresSummary = {
   done: 14,
   total: 20,
   people: [
@@ -37,20 +42,20 @@ export const chores = {
   ],
 };
 
-export const shopping = {
+export const shopping: ShoppingSummary = {
   count: 7,
   lastChange: "Dad added milk 10 min ago",
   preview: ["Milk", "Eggs", "Lasagne sheets", "Apples"],
 };
 
-export const meals = {
+export const meals: MealsSummary = {
   tonight: "Lasagne",
   tomorrow: "Chicken soup",
   week: ["M", "T", "W", "T", "F", "S", "S"],
   todayIndex: 6,
 };
 
-export const budget = { usedPercent: 68, month: "November", day: 15, daysInMonth: 30 };
+export const budget: BudgetSummary = { usedPercent: 68, month: "November", day: 15, daysInMonth: 30 };
 
 // One-line live summary per module, shown in the full-page menu.
 export const moduleSummaries: Record<ModuleId, string> = {

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { EmptyState } from "@repo/ui/components/empty-state";
 import { FamilyMembers } from "@/components/family-members";
 import { MODULES, findModule } from "@/lib/modules";
 
@@ -27,9 +28,12 @@ export default async function ModulePage({ params }: PageProps<"/[module]">) {
           <FamilyMembers />
         </div>
       ) : (
-        <div className="rounded-lg border border-dashed border-border-strong p-8 text-muted-foreground">
-          {appModule.name} is not built yet. It will appear here.
-        </div>
+        <EmptyState
+          size="page"
+          icon={<Icon />}
+          title={`${appModule.name} is coming soon`}
+          description="This part of the app isn't built yet. Everything for it will live on this page."
+        />
       )}
     </section>
   );
