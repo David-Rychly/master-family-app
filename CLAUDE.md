@@ -37,5 +37,6 @@ Storybook (`apps/storybook`, `pnpm storybook` → http://localhost:6006) is the 
 
 ## Data
 
-- Dashboard data is example data in `apps/web/src/lib/mock-dashboard.ts` until the API serves it.
+- The signed-in member and the menu summaries are example data in `apps/web/src/lib/mock-dashboard.ts` until the API serves them.
+- Fuel prices come from the old Node backend (`LEGACY_API_URL` in `apps/web/src/lib/api.ts`) until that endpoint moves into `apps/api`.
 - API: routes stay thin; logic goes in `services/`, data access in `data/` repositories (mock now, Drizzle later), request and response shapes in `packages/shared`.

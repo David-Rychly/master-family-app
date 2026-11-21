@@ -1,228 +1,37 @@
-import { CalendarDays, Clock, Plus, Users } from "lucide-react";
-import { Avatar, AvatarFallback } from "@repo/ui/components/avatar";
-import { Badge } from "@repo/ui/components/badge";
-import { Button } from "@repo/ui/components/button";
+import { Fuel } from "lucide-react";
+import type { GasStation } from "@repo/shared";
 import { EmptyState } from "@repo/ui/components/empty-state";
-import { Progress } from "@repo/ui/components/progress";
-import { cn } from "@repo/ui/lib/utils";
-import type { BudgetSummary, ChoresSummary, EventItem, MealsSummary, ShoppingSummary } from "@/lib/mock-dashboard";
+import { UpdatedNote } from "@/components/fuel/updated-note";
+import { formatDistance, formatPrice, lastUpdate, splitCurrent } from "@/lib/fuel";
 import { StatCard, StatValue } from "./stat-card";
 
-function EventRow({ event }: { event: EventItem }) {
-  const done = event.status === "done";
-  const soon = event.status === "soon";
-  return (
-    <li className={cn("flex items-center gap-3 border-t py-3.5 first:border-t-0", done && "opacity-55")}>
-      <span className={cn("type-num w-11 shrink-0 text-muted-foreground", soon && "text-primary")}>{event.time}</span>
-      <div className="min-w-0 flex-1">
-        <div className={cn("truncate", soon && "font-semibold", done && "line-through")}>{event.title}</div>
-        {event.meta ? <div className="type-small truncate text-muted-foreground">{event.meta}</div> : null}
-      </div>
-      {soon ? (
-        <Badge variant="warning">
-          <Clock />
-          Soon
-        </Badge>
-      ) : event.who ? (
-        <Avatar className="size-7">
-          <AvatarFallback>{event.who}</AvatarFallback>
-        </Avatar>
-      ) : (
-        <span className="grid size-7 place-items-center rounded-full bg-surface-3 text-muted-foreground">
-          <Users className="size-4" strokeWidth={1.75} aria-label="Everyone" />
-        </span>
-      )}
-    </li>
-  );
-}
-
-export function TodayCard({
-  today,
-  tomorrow,
-  className,
-}: {
-  today: EventItem[];
-  tomorrow: EventItem[];
-  className?: string;
-}) {
-  if (today.length === 0) {
+export function FuelCard({ stations, now }: { stations: GasStation[]; now: Date }) {
+  if (stations.length === 0) {
     return (
-      <StatCard label="Today" href="/calendar" linkLabel="Open Calendar" className={className}>
-        <EmptyState
-          icon={<CalendarDays />}
-          title="Nothing planned today"
-          description="Events anyone in the family adds show up here."
-          action={
-            <Button variant="outline" size="sm">
-              <Plus />
-              Add event
-            </Button>
-          }
-        />
+      <StatCard label="Fuel prices" href="/fuel" linkLabel="Open Fuel prices">
+        <EmptyState icon={<Fuel />} title="No prices yet" description="They show up here after the next morning update." />
       </StatCard>
     );
   }
 
-  const remaining = today.filter((e) => e.status !== "done").length;
+  // Only stations from the latest update; a price left over from months ago would always look cheapest.
+  const [cheapest, ...rest] = splitCurrent(stations).current;
   return (
-    <StatCard label="Today" href="/calendar" linkLabel="Open Calendar" className={className}>
-      <div className="flex items-baseline gap-2.5">
-        <span className="type-stat text-primary">{today.length}</span>
-        <span className="type-small text-muted-foreground">
-          {today.length === 1 ? "event" : "events"} · {remaining === 0 ? "all done" : `${remaining} still to come`}
-        </span>
-      </div>
+    <StatCard label="Fuel prices" href="/fuel" linkLabel="Open Fuel prices">
+      <StatValue
+        value={<span className="text-primary">{formatPrice(cheapest.price)}</span>}
+        meta={`Cheapest at ${cheapest.name}, ${formatDistance(cheapest.distance)} away`}
+      />
       <ul className="flex flex-col">
-        {today.map((event) => (
-          <EventRow key={event.time + event.title} event={event} />
-        ))}
-      </ul>
-      {tomorrow.length > 0 ? (
-        <div className="mt-auto flex flex-col gap-2.5 border-t pt-4">
-          <span className="type-label text-subtle">Tomorrow</span>
-          {tomorrow.map((event) => (
-            <div key={event.time} className="type-small flex gap-3 text-muted-foreground">
-              <span className="type-num w-11 shrink-0">{event.time}</span>
-              <span>{event.title}</span>
-            </div>
-          ))}
-        </div>
-      ) : null}
-    </StatCard>
-  );
-}
-
-export function ChoresCard({ chores }: { chores: ChoresSummary }) {
-  if (chores.total === 0) {
-    return (
-      <StatCard label="Chores this week" href="/chores" linkLabel="Open Chores">
-        <EmptyState
-          title="No chores set up"
-          description="Add the jobs that repeat each week and who does them."
-          action={
-            <Button variant="outline" size="sm">
-              <Plus />
-              Add chore
-            </Button>
-          }
-        />
-      </StatCard>
-    );
-  }
-
-  const left = chores.total - chores.done;
-  return (
-    <StatCard label="Chores this week" href="/chores" linkLabel="Open Chores">
-      {left === 0 ? (
-        <EmptyState tone="done" title="All chores done this week" description="Nice work, everyone." />
-      ) : (
-        <StatValue
-          value={
-            <>
-              <span className="text-primary">{chores.done}</span>
-              <span className="text-subtle"> / {chores.total}</span>
-            </>
-          }
-          meta={`${left} left before Sunday night`}
-        />
-      )}
-      <ul className="flex flex-col gap-2.5">
-        {chores.people.map((p) => (
-          <li key={p.name} className="type-small grid grid-cols-[44px_minmax(0,1fr)_32px] items-center gap-2.5">
-            <span>{p.name}</span>
-            <Progress value={(p.done / p.total) * 100} aria-label={`${p.name}: ${p.done} of ${p.total} done`} />
-            <span className="type-num text-right text-muted-foreground">
-              {p.done}/{p.total}
-            </span>
+        {rest.slice(0, 3).map((s) => (
+          <li key={s.id} className="type-small flex justify-between gap-3 border-t py-2.5 first:border-t-0">
+            <span className="truncate">{s.name}</span>
+            <span className="type-num text-muted-foreground">{formatPrice(s.price)}</span>
           </li>
         ))}
       </ul>
-    </StatCard>
-  );
-}
-
-export function ShoppingCard({ shopping }: { shopping: ShoppingSummary }) {
-  const addButton = (
-    <Button variant="outline" size="sm" className="mt-auto self-start">
-      <Plus />
-      Add item
-    </Button>
-  );
-
-  if (shopping.count === 0) {
-    return (
-      <StatCard label="Shopping list" href="/shopping" linkLabel="Open Shopping">
-        <EmptyState tone="done" title="Nothing to buy" description={shopping.lastChange} />
-        {addButton}
-      </StatCard>
-    );
-  }
-
-  const rest = shopping.count - shopping.preview.length;
-  return (
-    <StatCard label="Shopping list" href="/shopping" linkLabel="Open Shopping">
-      <StatValue value={shopping.count} meta={`items · ${shopping.lastChange}`} />
-      <div className="flex flex-wrap gap-2">
-        {shopping.preview.map((item) => (
-          <Badge key={item} className="px-2.5 py-1 text-[13px]">
-            {item}
-          </Badge>
-        ))}
-        {rest > 0 ? <Badge className="px-2.5 py-1 text-[13px] text-subtle">+{rest}</Badge> : null}
-      </div>
-      {addButton}
-    </StatCard>
-  );
-}
-
-export function MealsCard({ meals }: { meals: MealsSummary }) {
-  return (
-    <StatCard label="Meals this week" href="/meals" linkLabel="Open Meals">
-      <div>
-        <div className="type-h2">Tonight: {meals.tonight.toLowerCase()}</div>
-        <div className="type-small text-muted-foreground">Tomorrow: {meals.tomorrow.toLowerCase()}</div>
-      </div>
-      <ol className="mt-auto grid grid-cols-7 gap-1.5" aria-label="Meals planned this week">
-        {meals.week.map((day, i) => {
-          const isToday = i === meals.todayIndex;
-          return (
-            <li
-              key={i}
-              className={cn(
-                "flex flex-col items-center gap-1.5 text-[11px] text-subtle",
-                isToday && "font-semibold text-primary",
-              )}
-            >
-              {day}
-              <span className={cn("h-7 w-full rounded-sm bg-secondary", isToday && "bg-primary")} />
-            </li>
-          );
-        })}
-      </ol>
-    </StatCard>
-  );
-}
-
-export function BudgetCard({ budget }: { budget: BudgetSummary }) {
-  return (
-    <StatCard label={`${budget.month} budget`} href="/budget" linkLabel="Open Budget">
-      <StatValue
-        value={
-          <>
-            {budget.usedPercent}
-            <span className="text-subtle">%</span>
-          </>
-        }
-        meta={`used, with ${budget.daysInMonth - budget.day} days to go`}
-      />
-      <div className="mt-auto flex flex-col gap-2">
-        <Progress value={budget.usedPercent} aria-label={`${budget.usedPercent}% of the budget used`} />
-        <div className="flex justify-between text-xs text-subtle">
-          <span>On track</span>
-          <span className="type-num text-xs">
-            day {budget.day} of {budget.daysInMonth}
-          </span>
-        </div>
+      <div className="mt-auto">
+        <UpdatedNote updatedAt={lastUpdate(stations)} now={now} />
       </div>
     </StatCard>
   );

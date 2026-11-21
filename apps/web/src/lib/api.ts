@@ -1,9 +1,17 @@
-import { FamilyMemberList, type FamilyMember } from "@repo/shared";
+import { GasStationList, type GasStation } from "@repo/shared";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+// The old Node backend still serves fuel prices until that endpoint moves into apps/api.
+const LEGACY_API_URL = process.env.LEGACY_API_URL ?? "https://be-node-orpin.vercel.app";
 
-export async function fetchFamilyMembers(): Promise<FamilyMember[]> {
-  const res = await fetch(`${API_URL}/api/family/members`);
+export async function fetchGasStations(): Promise<GasStation[]> {
+  const res = await fetch(`${LEGACY_API_URL}/gas-stations?latest=true`);
   if (!res.ok) throw new Error(`API error ${res.status}`);
-  return FamilyMemberList.parse(await res.json());
+  return GasStationList.parse(await res.json());
+}
+
+/** Every price ever recorded. The old API has no date filter, so this is the whole table. */
+export async function fetchGasPriceHistory(): Promise<GasStation[]> {
+  const res = await fetch(`${LEGACY_API_URL}/gas-stations`);
+  if (!res.ok) throw new Error(`API error ${res.status}`);
+  return GasStationList.parse(await res.json());
 }
