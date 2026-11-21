@@ -5,7 +5,7 @@ import { latestStations, storyNow } from "./fixtures";
 import { FuelPrices, FuelPricesSkeleton } from "./fuel-prices";
 
 const meta = {
-  title: "App/FuelPrices",
+  title: "Fuel/FuelPrices",
   component: FuelPrices,
   parameters: { layout: "padded" },
   decorators: [(Story) => <div className="max-w-4xl">{Story()}</div>],

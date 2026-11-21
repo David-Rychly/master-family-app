@@ -1,11 +1,11 @@
 import { Clock, Fuel } from "lucide-react";
-import type { GasStation } from "@repo/shared";
+import type { GasStation } from "@repo/shared/fuel";
 import { Badge } from "@repo/ui/components/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { EmptyState } from "@repo/ui/components/empty-state";
 import { Loading, Skeleton } from "@repo/ui/components/skeleton";
 import { cn } from "@repo/ui/lib/utils";
-import { formatDistance, formatPrice, formatUpdated, lastUpdate, splitCurrent } from "@/lib/fuel";
+import { formatDistance, formatPrice, formatUpdated, lastUpdate, splitCurrent } from "../lib";
 import { UpdatedNote } from "./updated-note";
 
 const TITLE = "Latest prices";
@@ -80,17 +80,19 @@ export function FuelPrices({ stations, now }: { stations: GasStation[]; now: Dat
                     </div>
                     <div className="type-small text-muted-foreground">
                       {s.street}, {s.city}
-                      <span className="sm:hidden"> · {formatDistance(s.distance)}</span>
+                      {s.distance !== null ? (
+                        <span className="sm:hidden"> · {formatDistance(s.distance)}</span>
+                      ) : null}
                     </div>
                   </td>
                   <td className="hidden py-3 pr-4 whitespace-nowrap text-muted-foreground type-num sm:table-cell">
-                    {formatDistance(s.distance)}
+                    {formatDistance(s.distance) ?? "—"}
                   </td>
                   <td className="hidden py-3 pr-4 whitespace-nowrap text-muted-foreground type-num md:table-cell">
-                    {formatUpdated(s.updated_at)}
+                    {formatUpdated(s.updatedAt)}
                   </td>
                   <td className="hidden py-3 pr-4 text-muted-foreground type-num lg:table-cell">
-                    {s.station_id}
+                    {s.stationId}
                   </td>
                   <td
                     className={cn(

@@ -1,28 +1,15 @@
 import { Suspense, type ReactNode } from "react";
 import { SkeletonCard } from "@repo/ui/components/skeleton";
-import { FuelCard } from "@/components/dashboard/cards";
 import { Greeting, TodayDate } from "@/components/shell/greeting";
 import { CardBoundary } from "@/components/states/card-boundary";
-import { fetchGasStations } from "@/lib/api";
-import { currentMember } from "@/lib/mock-dashboard";
-
-// Real data from the old backend, fetched per request and streamed into its slot.
-async function LatestFuel() {
-  const stations = await fetchGasStations();
-  return <FuelCard stations={stations} now={new Date()} />;
-}
+import { currentMember } from "@/core/mock-member";
+import { DASHBOARD_CARDS } from "@/modules/dashboard";
 
 /** Each card loads and fails on its own, so one slow or broken module never blanks the dashboard. */
-function CardSlot({ label, module, rows = 2, className, children }: {
-  label: string;
-  module: string;
-  rows?: number;
-  className?: string;
-  children: ReactNode;
-}) {
+function CardSlot({ label, rows, children }: { label: string; rows: number; children: ReactNode }) {
   return (
-    <CardBoundary label={label} title={`Couldn't load ${module}`} className={className}>
-      <Suspense fallback={<SkeletonCard rows={rows} className={className} />}>{children}</Suspense>
+    <CardBoundary label={label} title={`Couldn't load ${label.toLowerCase()}`}>
+      <Suspense fallback={<SkeletonCard rows={rows} />}>{children}</Suspense>
     </CardBoundary>
   );
 }
@@ -40,9 +27,11 @@ export default function Dashboard() {
       </section>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
-        <CardSlot label="Fuel prices" module="fuel prices" rows={3}>
-          <LatestFuel />
-        </CardSlot>
+        {DASHBOARD_CARDS.map(({ module, Card, skeletonRows }) => (
+          <CardSlot key={module.id} label={module.name} rows={skeletonRows}>
+            <Card />
+          </CardSlot>
+        ))}
       </div>
     </>
   );

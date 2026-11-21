@@ -1,6 +1,6 @@
 import { TriangleAlert } from "lucide-react";
 import { Badge } from "@repo/ui/components/badge";
-import { formatDayMonth, formatUpdated, isStale } from "@/lib/fuel";
+import { formatDayMonth, formatUpdated, isStale } from "../lib";
 
 /** When prices were last updated, with a warning once the morning update has stopped coming in. */
 export function UpdatedNote({ updatedAt, now }: { updatedAt: string; now: Date }) {

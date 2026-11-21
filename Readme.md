@@ -7,7 +7,7 @@ Monorepo for the family app: a Next.js frontend (installable as a PWA on phones)
 ```
 apps/
   web/        Next.js (App Router) frontend + PWA manifest
-  api/        Express API (routes -> services -> data repositories)
+  api/        Express API: core/ + modules/<id>/ (router -> service -> repository)
   storybook/  Storybook: every component and state in one place
 packages/
   ui/         design system: tokens, theme, shadcn/ui base components, states
@@ -20,7 +20,8 @@ infra/        local infrastructure (docker-compose Postgres), deploy configs
 Rules:
 - Infrastructure lives in `infra/`, `packages/config` and `.github/`. Features live in `apps/*` and `packages/shared`.
 - Apps depend on packages, never the other way round.
-- API routes stay thin. Business logic lives in `services/` and data access in `data/`, so the API can move to NestJS later and the mock data can be swapped for Drizzle.
+- Features are modules: one folder per module in `apps/web/src/modules`, `apps/api/src/modules` and `packages/shared/src`, with the same id everywhere. Shared foundations (home, family, health) live in `core/`. Module rules are in `CLAUDE.md`.
+- API routers stay thin. Logic lives in each module's service and data access in its repository, so the API can move to NestJS later and the mock data can be swapped for Drizzle.
 
 ## Getting started
 

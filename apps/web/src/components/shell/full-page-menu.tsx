@@ -8,8 +8,8 @@ import { Dialog as DialogPrimitive } from "radix-ui";
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar";
 import { Button } from "@repo/ui/components/button";
 import { cn } from "@repo/ui/lib/utils";
-import { MODULES } from "@/lib/modules";
-import { currentMember, moduleSummaries } from "@/lib/mock-dashboard";
+import { currentMember } from "@/core/mock-member";
+import { MENU_ITEMS } from "@/modules/registry";
 import { Logo } from "./logo";
 import { SchemePicker } from "./scheme-picker";
 
@@ -48,7 +48,7 @@ export function FullPageMenu() {
 
             <div className="flex flex-wrap items-start gap-12 lg:gap-16">
               <nav aria-label="Modules" className="flex min-w-0 flex-[999_1_560px] flex-col border-b">
-                {MODULES.map((module, index) => {
+                {MENU_ITEMS.map((module, index) => {
                   const active = isActive(pathname, module.href);
                   const Icon = module.icon;
                   return (
@@ -80,7 +80,7 @@ export function FullPageMenu() {
                             {module.name}
                           </span>
                           <span className="type-small text-muted-foreground sm:text-right">
-                            {moduleSummaries[module.id]}
+                            {module.summary}
                           </span>
                         </span>
                       </Link>

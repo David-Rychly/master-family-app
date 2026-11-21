@@ -1,4 +1,4 @@
-import type { GasStation } from "@repo/shared";
+import type { GasStation } from "@repo/shared/fuel";
 
 // Prices are collected around Prague, so dates and times are shown there whatever time zone the server runs in.
 const TIME_ZONE = "Europe/Prague";
@@ -24,8 +24,9 @@ const dayKeyFormat = new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE });
 
 export const formatPrice = (price: number) => priceFormat.format(price);
 export const formatUpdated = (iso: string) => updatedFormat.format(new Date(iso));
-export const formatDistance = (metres: number) =>
-  metres < 1000 ? `${metres} m` : `${(metres / 1000).toFixed(1)} km`;
+/** Null when the distance isn't known. */
+export const formatDistance = (metres: number | null) =>
+  metres === null ? null : metres < 1000 ? `${metres} m` : `${(metres / 1000).toFixed(1)} km`;
 
 /** Latest prices, cheapest first. */
 export function sortByPrice(stations: GasStation[]) {
@@ -34,7 +35,7 @@ export function sortByPrice(stations: GasStation[]) {
 
 /** Newest update across all stations, as an ISO string. */
 export function lastUpdate(stations: GasStation[]) {
-  return stations.reduce((latest, s) => (s.updated_at > latest ? s.updated_at : latest), "");
+  return stations.reduce((latest, s) => (s.updatedAt > latest ? s.updatedAt : latest), "");
 }
 
 const dayMonthFormat = new Intl.DateTimeFormat("en-GB", {
@@ -60,7 +61,7 @@ export function splitCurrent(stations: GasStation[]) {
   const current: GasStation[] = [];
   const outdated: GasStation[] = [];
   for (const s of sortByPrice(stations)) {
-    (isStale(s.updated_at, new Date(newest)) ? outdated : current).push(s);
+    (isStale(s.updatedAt, new Date(newest)) ? outdated : current).push(s);
   }
   return { current, outdated };
 }
@@ -80,18 +81,18 @@ export function toDailyPrices(rows: GasStation[]): PriceHistory {
   >();
 
   for (const row of rows) {
-    names.set(row.station_id, row.name);
-    const date = new Date(row.updated_at);
+    names.set(row.stationId, row.name);
+    const date = new Date(row.updatedAt);
     const key = dayKeyFormat.format(date);
     let day = days.get(key);
     if (!day) {
       day = { label: dayLabelFormat.format(date), prices: {}, at: {} };
       days.set(key, day);
     }
-    const seen = day.at[row.station_id];
-    if (!seen || row.updated_at > seen) {
-      day.prices[row.station_id] = row.price;
-      day.at[row.station_id] = row.updated_at;
+    const seen = day.at[row.stationId];
+    if (!seen || row.updatedAt > seen) {
+      day.prices[row.stationId] = row.price;
+      day.at[row.stationId] = row.updatedAt;
     }
   }
 

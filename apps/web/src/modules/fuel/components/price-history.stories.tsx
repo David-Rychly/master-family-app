@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Card, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { ErrorState } from "@repo/ui/components/error-state";
-import { toDailyPrices } from "@/lib/fuel";
+import { toDailyPrices } from "../lib";
 import { historyRows } from "./fixtures";
 import { PriceHistory, PriceHistorySkeleton } from "./price-history";
 
 const meta = {
-  title: "App/PriceHistory",
+  title: "Fuel/PriceHistory",
   component: PriceHistory,
   parameters: { layout: "padded" },
   decorators: [(Story) => <div className="max-w-4xl">{Story()}</div>],

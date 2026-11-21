@@ -1,5 +1,5 @@
 // Example data for stories, in the shape the old API returns.
-import type { GasStation } from "@repo/shared";
+import type { GasStation } from "@repo/shared/fuel";
 
 /** "Now" for stories: shortly after the morning update. */
 export const storyNow = new Date("2026-11-21T09:30:00Z");
@@ -7,53 +7,53 @@ export const storyNow = new Date("2026-11-21T09:30:00Z");
 export const latestStations: GasStation[] = [
   {
     id: 2668,
-    station_id: "17062",
+    stationId: "17062",
     name: "MOL",
     price: 46.9,
     city: "Praha 5 - Barrandov",
     street: "K Barrandovu",
     distance: 70,
-    updated_at: "2026-11-21T06:00:03.471Z",
+    updatedAt: "2026-11-21T06:00:03.471Z",
   },
   {
     id: 2667,
-    station_id: "17215",
+    stationId: "17215",
     name: "OMV",
     price: 47.5,
     city: "Praha 5 - Barrandov",
     street: "K Barrandovu 10",
     distance: 1180,
-    updated_at: "2026-11-21T06:00:03.471Z",
+    updatedAt: "2026-11-21T06:00:03.471Z",
   },
   {
     id: 2666,
-    station_id: "17216",
+    stationId: "17216",
     name: "Orlen",
     price: 46.5,
     city: "Praha 5 - Barrandov",
     street: "K Barrandovu 6",
     distance: 0,
-    updated_at: "2026-11-21T06:00:03.471Z",
+    updatedAt: "2026-11-21T06:00:03.471Z",
   },
   {
     id: 2530,
-    station_id: "18390",
+    stationId: "18390",
     name: "Shell",
     price: 42.9,
     city: "Praha 5 - Hlubočepy",
     street: "Geologická",
     distance: 1460,
-    updated_at: "2026-11-02T06:00:06.421Z",
+    updatedAt: "2026-11-02T06:00:06.421Z",
   },
   {
     id: 2669,
-    station_id: "19281",
+    stationId: "19281",
     name: "Prim",
     price: 44.5,
     city: "Praha 5",
     street: "Slavínského",
     distance: 2300,
-    updated_at: "2026-11-21T06:00:03.471Z",
+    updatedAt: "2026-11-21T06:00:03.471Z",
   },
 ];
 
@@ -72,7 +72,7 @@ export function historyRows(days: number): GasStation[] {
         ...s,
         id: id++,
         price: Math.round((s.price + drift) * 10) / 10,
-        updated_at: at.toISOString(),
+        updatedAt: at.toISOString(),
       });
     }
   }

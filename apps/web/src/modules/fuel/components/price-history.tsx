@@ -6,7 +6,7 @@ import { Button } from "@repo/ui/components/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { EmptyState } from "@repo/ui/components/empty-state";
 import { Loading, Skeleton } from "@repo/ui/components/skeleton";
-import { formatPrice, type PriceHistory as PriceHistoryData } from "@/lib/fuel";
+import { formatPrice, type PriceHistory as PriceHistoryData } from "../lib";
 
 const TITLE = "Price history";
 const FIRST_PAGE = 14;

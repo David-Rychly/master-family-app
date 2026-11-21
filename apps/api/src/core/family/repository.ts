@@ -1,4 +1,4 @@
-import type { CreateFamilyMember, FamilyMember } from "@repo/shared";
+import type { CreateFamilyMember, FamilyMember } from "@repo/shared/family";
 
 export interface FamilyRepository {
   list(): Promise<FamilyMember[]>;

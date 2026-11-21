@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { CreateFamilyMember } from "@repo/shared";
-import { familyService } from "../services/family-service";
+import { CreateFamilyMember } from "@repo/shared/family";
+import { familyService } from "./service";
 
 export const familyRouter = Router();
 

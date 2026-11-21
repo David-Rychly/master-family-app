@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar";
-import { familyInitials } from "@/lib/mock-dashboard";
+import { familyInitials } from "@/core/mock-member";
 import { FullPageMenu } from "./full-page-menu";
 import { Logo } from "./logo";
 

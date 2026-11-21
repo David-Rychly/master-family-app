@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
-import type { FamilyMember } from "@repo/shared";
-import type { FamilyRepository } from "./family-repository";
+import type { FamilyMember } from "@repo/shared/family";
+import type { FamilyRepository } from "./repository";
 
 // In-memory mock data. Resets on every restart.
 const members: FamilyMember[] = [

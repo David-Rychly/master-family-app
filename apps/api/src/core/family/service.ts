@@ -1,6 +1,6 @@
-import type { CreateFamilyMember, FamilyMember } from "@repo/shared";
-import type { FamilyRepository } from "../data/family-repository";
-import { mockFamilyRepository } from "../data/mock-family-repository";
+import type { CreateFamilyMember, FamilyMember } from "@repo/shared/family";
+import type { FamilyRepository } from "./repository";
+import { mockFamilyRepository } from "./mock-repository";
 
 // Business logic lives here. Routes stay thin so they can be ported to Nest controllers later.
 export function createFamilyService(repo: FamilyRepository) {
