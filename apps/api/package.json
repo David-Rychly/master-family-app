@@ -7,19 +7,24 @@
     "dev": "tsx watch --env-file-if-exists=../../.env src/index.ts",
     "build": "tsup",
     "start": "node --env-file-if-exists=../../.env dist/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@repo/shared": "workspace:*",
     "cheerio": "1.2.0",
     "cors": "^2",
-    "express": "^5"
+    "drizzle-orm": "^0.45.4",
+    "express": "^5",
+    "postgres": "3.4.5"
   },
   "devDependencies": {
     "@repo/config": "workspace:*",
     "@types/cors": "^2",
     "@types/express": "^5",
     "@types/node": "^22",
+    "drizzle-kit": "^0.31.11",
     "tsup": "^8",
     "tsx": "^4",
     "typescript": "^5"

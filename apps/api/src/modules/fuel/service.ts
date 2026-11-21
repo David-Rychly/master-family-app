@@ -1,5 +1,5 @@
 import type { FetchPricesResult, GasStation } from "@repo/shared/fuel";
-import { mockFuelRepository } from "./mock-repository";
+import { drizzleFuelRepository } from "./drizzle-repository";
 import type { FuelRepository } from "./repository";
 import { scrapeStations } from "./scraper";
 
@@ -22,5 +22,4 @@ export function createFuelService(repo: FuelRepository, scrape = scrapeStations)
   };
 }
 
-// Swap mockFuelRepository for a Drizzle-backed repository once the database exists.
-export const fuelService = createFuelService(mockFuelRepository);
+export const fuelService = createFuelService(drizzleFuelRepository);

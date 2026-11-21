@@ -55,6 +55,8 @@ Storybook (`apps/storybook`, `pnpm storybook` → http://localhost:6006) is the 
 ## Data
 
 - The signed-in member is example data in `apps/web/src/core/mock-member.ts` until auth exists.
-- The web fuel module still reads the old Node backend (`LEGACY_API_URL` in `modules/fuel/api.ts`). `apps/api` has the fuel module with a mock repository; switch the web over once its Drizzle repository and the price data are in place.
-- API: routers stay thin; logic goes in the service, data access in repositories (mock now, Drizzle later).
+- The API's database is Postgres on Neon through Drizzle and `postgres` (`apps/api/src/core/db.ts`, `DATABASE_URL` in the root `.env`).
+- Schema changes go through migrations: edit a `schema.ts`, run `pnpm --filter api db:generate`, review the SQL in `apps/api/drizzle/`, then `pnpm --filter api db:migrate`.
+- The web reads the API on the server only (`API_URL`, default `http://localhost:4000`); `pnpm dev` starts both.
+- API: routers stay thin; logic goes in the service, data access in repositories (Drizzle for fuel, mock for core family until it gets tables).
 - Copy is English; money and dates use Czech formats (CZK, Europe/Prague).
